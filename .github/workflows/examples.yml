@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: examples
+  cancel-in-progress: true
+
 jobs:
   examples:
     runs-on: ubuntu-latest
@@ -36,4 +40,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add examples
-          git diff --cached --quiet || (git commit -m "Refresh examples" && git push)
+          git diff --cached --quiet || (git commit -m "Refresh examples" && git pull --rebase && git push)
