@@ -1,0 +1,12 @@
+{
+  "name": "pixel-profile",
+  "private": true,
+  "type": "module",
+  "description": "Profile README cards drawn from your GitHub data.",
+  "scripts": {
+    "build": "node src/build.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

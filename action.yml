@@ -1,0 +1,60 @@
+name: Pixel Profile Cards
+description: Draw your name in contribution-graph squares, plus stats, language and stack cards for your profile README. No third-party servers.
+author: Yog Rajja
+branding:
+  icon: grid
+  color: green
+
+inputs:
+  token:
+    description: Token used to read your GitHub data. github.token covers public repos; a personal token adds private repos to the language breakdown.
+    required: true
+  login:
+    description: GitHub username to draw. Defaults to the repository owner.
+    required: false
+    default: ${{ github.repository_owner }}
+  name:
+    description: Text for the pixel header, A to Z, spaces and hyphens. Defaults to your GitHub display name.
+    required: false
+    default: ""
+  title:
+    description: Bold line under the name, for example "Backend engineer at Acme".
+    required: false
+    default: ""
+  tagline:
+    description: Monospace line that types itself out under the title.
+    required: false
+    default: ""
+  footer:
+    description: Small line at the bottom of the header, for links or projects.
+    required: false
+    default: ""
+  stack:
+    description: 'Comma list of Simple Icons slugs, each optionally ":Label", for example "nextdotjs:Next.js,typescript,postgresql:Postgres".'
+    required: false
+    default: ""
+  cards:
+    description: Which cards to draw, from hero, stats and stack.
+    required: false
+    default: hero,stats,stack
+  output_dir:
+    description: Folder in your repository to write the SVGs into.
+    required: false
+    default: assets
+
+runs:
+  using: composite
+  steps:
+    - name: Draw cards
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/src/build.mjs"
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        PROFILE_LOGIN: ${{ inputs.login }}
+        HERO_NAME: ${{ inputs.name }}
+        HERO_TITLE: ${{ inputs.title }}
+        HERO_TAGLINE: ${{ inputs.tagline }}
+        HERO_FOOTER: ${{ inputs.footer }}
+        STACK: ${{ inputs.stack }}
+        CARDS: ${{ inputs.cards }}
+        OUT_DIR: ${{ github.workspace }}/${{ inputs.output_dir }}
